@@ -504,6 +504,55 @@ textarea:focus {
     color: var(--sepia);
 }
 
+.history-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    position: relative;
+}
+
+.copy-toast {
+    position: absolute;
+    top: -28px;
+    right: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "DM Mono", monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.15s, transform 0.15s;
+}
+
+.copy-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.btn-copy {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--sepia);
+    font-size: 0.85rem;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 2px;
+    transition: color 0.15s, background 0.15s;
+    flex-shrink: 0;
+}
+
+.btn-copy:hover {
+    color: var(--accent);
+    background: rgba(139, 69, 19, 0.08);
+}
+
 .btn-delete {
     background: none;
     border: none;

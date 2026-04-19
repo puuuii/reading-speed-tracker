@@ -273,7 +273,11 @@ const db = firebase.firestore();
             </div>
           </div>
         </div>
-        <button class="btn-delete" title="削除" data-id="${s.id}">✕</button>
+        <div class="history-actions">
+          <div class="copy-toast" id="toast-${s.id}">Copied!</div>
+          <button class="btn-copy" title="英文をコピー" data-id="${s.id}">⎘</button>
+          <button class="btn-delete" title="削除" data-id="${s.id}">✕</button>
+        </div>
       `;
 
       historyList.appendChild(el);
@@ -370,6 +374,24 @@ const db = firebase.firestore();
   });
 
   historyList.addEventListener("click", (e) => {
+    // Copy
+    const copyBtn = e.target.closest(".btn-copy");
+    if (copyBtn) {
+      const id = Number(copyBtn.dataset.id);
+      const session = sessions.find((s) => s.id == id);
+      if (session && session.text) {
+        navigator.clipboard.writeText(session.text).then(() => {
+          const toast = document.getElementById(`toast-${id}`);
+          if (toast) {
+            toast.classList.add("visible");
+            setTimeout(() => toast.classList.remove("visible"), 3000);
+          }
+        });
+      }
+      return;
+    }
+
+    // Delete
     const btn = e.target.closest(".btn-delete");
     if (!btn) return;
     const id = Number(btn.dataset.id);
@@ -382,7 +404,6 @@ const db = firebase.firestore();
     setTimeout(() => {
       if (currentUser) {
         deleteSessionFromFirestore(currentUser.uid, id).catch(console.error);
-        // onSnapshot が自動で再描画
       } else {
         deleteFromLocal(id);
       }
